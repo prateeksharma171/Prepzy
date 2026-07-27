@@ -1,7 +1,6 @@
 "use client";
 
 import { useAuth } from "../../context/AuthContext";
-import GoogleSignInButton from "./GoogleSignInButton";
 import LoginForm from "./LoginForm";
 import SignupForm from "./SignupForm";
 
@@ -46,14 +45,6 @@ export default function AuthDialog() {
         </div>
 
         <div className="px-7 pb-7 pt-6">
-          <GoogleSignInButton />
-
-          <div className="my-5 flex items-center gap-3">
-            <div className="h-px flex-1 bg-zinc-700" />
-            <span className="text-xs font-medium text-zinc-500">OR</span>
-            <div className="h-px flex-1 bg-zinc-700" />
-          </div>
-
           {authDialogTab === "login" ? <LoginForm /> : <SignupForm />}
         </div>
       </div>
