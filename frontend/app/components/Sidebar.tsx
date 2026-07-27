@@ -8,6 +8,7 @@ import {
   useState,
 } from "react";
 import { useRouter } from "next/navigation";
+import { createPortal } from "react-dom";
 import {
   MessageSquarePlus,
   Trash2,
@@ -839,8 +840,16 @@ export default function Sidebar({ onOpenPlugins, onNavigate }: SidebarProps) {
         )}
       </div>
 
-      {isFeedbackOpen && <FeedbackDialog onClose={() => setIsFeedbackOpen(false)} />}
-      {isAdminOpen && <AdminPanel onClose={() => setIsAdminOpen(false)} />}
+      {isFeedbackOpen &&
+        createPortal(
+          <FeedbackDialog onClose={() => setIsFeedbackOpen(false)} />,
+          document.body,
+        )}
+      {isAdminOpen &&
+        createPortal(
+          <AdminPanel onClose={() => setIsAdminOpen(false)} />,
+          document.body,
+        )}
     </aside>
   );
 }
