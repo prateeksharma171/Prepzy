@@ -281,9 +281,10 @@ const TOOL_MENU_ITEMS: ToolMenuItem[] = [
 
 interface SidebarProps {
   onOpenPlugins: () => void;
+  onNavigate?: () => void;
 }
 
-export default function Sidebar({ onOpenPlugins }: SidebarProps) {
+export default function Sidebar({ onOpenPlugins, onNavigate }: SidebarProps) {
   const [hoveredId, setHoveredId] = useState<string | null>(null);
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const [pinningId, setPinningId] = useState<string | null>(null);
@@ -475,6 +476,7 @@ export default function Sidebar({ onOpenPlugins }: SidebarProps) {
           void handleStartWeaknessDetection();
           break;
       }
+      onNavigate?.();
     },
     [
       handleStartMockInterview,
@@ -482,12 +484,16 @@ export default function Sidebar({ onOpenPlugins }: SidebarProps) {
       handleStartProjectQuestions,
       handleStartCodeExplanation,
       handleStartWeaknessDetection,
+      onNavigate,
     ],
   );
 
   const handleSelectChat = useCallback(
-    (id: string) => router.push(`/chat/${id}`),
-    [router],
+    (id: string) => {
+      router.push(`/chat/${id}`);
+      onNavigate?.();
+    },
+    [router, onNavigate],
   );
   const handleHoverStart = useCallback((id: string) => setHoveredId(id), []);
   const handleHoverEnd = useCallback(() => setHoveredId(null), []);
@@ -541,6 +547,7 @@ export default function Sidebar({ onOpenPlugins }: SidebarProps) {
         void handleLogout();
         break;
     }
+    onNavigate?.();
   };
 
   return (
@@ -558,7 +565,10 @@ export default function Sidebar({ onOpenPlugins }: SidebarProps) {
       {/* New Chat Button */}
       <div className="px-3 mb-2">
         <button
-          onClick={() => router.push("/")}
+          onClick={() => {
+            router.push("/");
+            onNavigate?.();
+          }}
           className="flex items-center gap-2 w-full rounded-xl border border-zinc-700 hover:border-zinc-500 px-3 py-2.5 text-sm transition-all duration-200 ease-out hover:bg-zinc-800 active:scale-[0.98]"
         >
           <MessageSquarePlus className="w-4 h-4 shrink-0" />
@@ -569,7 +579,10 @@ export default function Sidebar({ onOpenPlugins }: SidebarProps) {
       {/* Plugins */}
       <div className="px-2 mb-2">
         <button
-          onClick={onOpenPlugins}
+          onClick={() => {
+            onOpenPlugins();
+            onNavigate?.();
+          }}
           style={{ height: CHAT_ROW_HEIGHT - 4 }}
           className="flex items-center gap-3 w-full rounded-xl px-3 text-sm text-zinc-400 hover:bg-zinc-800/50 hover:text-zinc-200 transition-all duration-200 ease-out"
         >
@@ -810,7 +823,10 @@ export default function Sidebar({ onOpenPlugins }: SidebarProps) {
           </>
         ) : (
           <button
-            onClick={() => openAuthDialog("login")}
+            onClick={() => {
+              openAuthDialog("login");
+              onNavigate?.();
+            }}
             className="flex items-center gap-3 w-full rounded-xl px-3 py-2.5 text-sm hover:bg-zinc-800 transition-colors duration-200"
           >
             <div className="w-8 h-8 rounded-full bg-zinc-700 flex items-center justify-center text-zinc-300 shrink-0">

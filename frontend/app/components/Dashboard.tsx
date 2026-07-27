@@ -146,7 +146,10 @@ export default function Dashboard() {
               ${mobileMenuOpen ? 'translate-x-0' : '-translate-x-full'}
             `}
           >
-            <Sidebar onOpenPlugins={handleOpenPlugins} />
+            <Sidebar
+              onOpenPlugins={handleOpenPlugins}
+              onNavigate={() => setMobileMenuOpen(false)}
+            />
           </div>
 
           {/* Main Content */}
